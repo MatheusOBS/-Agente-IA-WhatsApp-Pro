@@ -1,0 +1,2612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agente IA WhatsApp Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Agente IA WhatsApp Pro - Automação humanizada para WhatsApp com agente profissional personalizado, capaz de entender áudios, imagens, vídeos e documentos, marcar consultas e realizar atendimentos completos." />
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-darker: #020314;
+      --bg-card: #0b1020;
+      --bg-soft: #0f172a;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --accent-strong: #16a34a;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2937;
+      --error: #f97373;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.9);
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 999px;
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.3s ease;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 38%, #020314 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header / Nav */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.65), transparent);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.85);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 20% 0, #bbf7d0 0, #22c55e 40%, #16a34a 70%, #15803d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4), 0 15px 38px rgba(34, 197, 94, 0.55);
+    }
+
+    .brand-logo span {
+      font-size: 18px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      font-size: 0.98rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      padding: 0.3rem 0;
+      position: relative;
+      transition: color var(--transition-fast);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.2rem;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #4ade80, #22c55e);
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      box-shadow: 0 12px 28px rgba(34, 197, 94, 0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(34, 197, 94, 0.6);
+      background: linear-gradient(135deg, #22c55e, #86efac);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-main);
+      border-color: rgba(229, 231, 235, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .btn-icon {
+      margin-left: 0.4rem;
+      font-size: 1rem;
+    }
+
+    .nav-whatsapp-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--accent);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+    }
+
+    .nav-whatsapp-tag span:first-child {
+      font-size: 0.85rem;
+    }
+
+    .hamburger {
+      display: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .hamburger-line {
+      width: 16px;
+      height: 1.5px;
+      background: #e5e7eb;
+      position: relative;
+      transition: transform var(--transition-med), background var(--transition-med);
+    }
+
+    .hamburger-line::before,
+    .hamburger-line::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 16px;
+      height: 1.5px;
+      background: #e5e7eb;
+      transition: transform var(--transition-med), opacity var(--transition-med), top var(--transition-med), bottom var(--transition-med);
+    }
+
+    .hamburger-line::before {
+      top: -5px;
+    }
+
+    .hamburger-line::after {
+      bottom: -5px;
+    }
+
+    .hamburger.open .hamburger-line {
+      background: transparent;
+    }
+
+    .hamburger.open .hamburger-line::before {
+      transform: rotate(45deg);
+      top: 0;
+    }
+
+    .hamburger.open .hamburger-line::after {
+      transform: rotate(-45deg);
+      bottom: 0;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 0.6rem 0 1rem;
+    }
+
+    .mobile-nav a {
+      padding: 0.45rem 0.3rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .mobile-nav a:hover {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      transform: translateX(1px);
+    }
+
+    .mobile-nav .btn {
+      margin-top: 0.4rem;
+      width: 100%;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding: 2.7rem 0 3.5rem;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 2.4rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.6rem 0.2rem 0.25rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-bottom: 0.9rem;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .hero-badge-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #bbf7d0 0, #22c55e 45%, #15803d 100%);
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.28), 0 10px 20px rgba(34, 197, 94, 0.45);
+    }
+
+    .hero-badge-label {
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.64rem;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.8rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #4ade80, #22c55e, #a7f3d0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+      line-height: 1.6;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .hero-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      color: var(--text-muted);
+    }
+
+    .hero-list-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      background: rgba(22, 163, 74, 0.12);
+      color: #4ade80;
+      flex-shrink: 0;
+      margin-top: 0.08rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-secondary-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 0.45rem 0.8rem;
+      background: rgba(2, 6, 23, 0.8);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+    }
+
+    .hero-secondary-cta-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #a5b4fc;
+      background: radial-gradient(circle at 30% 0, #1d263b 0, #020617 60%, #020314 100%);
+    }
+
+    .hero-secondary-cta:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 1);
+      transform: translateY(-1px);
+      color: var(--text-main);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-meta-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-meta-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.25);
+    }
+
+    .hero-meta-highlight {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-phone {
+      position: relative;
+      justify-self: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: -12%;
+      background: radial-gradient(circle at 15% 0, rgba(74, 222, 128, 0.7), transparent 60%), radial-gradient(circle at 90% 100%, rgba(59, 130, 246, 0.4), transparent 55%);
+      opacity: 0.55;
+      filter: blur(28px);
+      z-index: -1;
+    }
+
+    .phone-frame {
+      width: 100%;
+      max-width: 330px;
+      border-radius: 32px;
+      padding: 0.45rem;
+      background: radial-gradient(circle at 0 0, #1e293b 0, #020617 45%, #020314 100%);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: var(--shadow-soft);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .phone-inner {
+      border-radius: 26px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 430px;
+    }
+
+    .phone-notch {
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 4px;
+    }
+
+    .phone-notch-inner {
+      width: 110px;
+      height: 10px;
+      border-radius: 999px;
+      background: #020617;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .phone-header {
+      padding: 0.35rem 0.8rem 0.55rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #ecfdf5;
+      font-size: 0.7rem;
+    }
+
+    .phone-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .phone-header-info {
+      flex: 1;
+    }
+
+    .phone-header-title {
+      font-weight: 600;
+      font-size: 0.74rem;
+    }
+
+    .phone-header-status {
+      font-size: 0.68rem;
+      opacity: 0.92;
+    }
+
+    .phone-header-tag {
+      font-size: 0.62rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(209, 250, 229, 0.4);
+      font-weight: 500;
+    }
+
+    .phone-body {
+      flex: 1;
+      padding: 0.55rem 0.55rem 0.6rem;
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9) 0, #020617 55%, #020314 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      overflow: hidden;
+    }
+
+    .phone-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.32rem;
+      overflow-y: auto;
+      padding-right: 0.2rem;
+    }
+
+    .chat-row {
+      display: flex;
+      gap: 0.22rem;
+      align-items: flex-end;
+    }
+
+    .chat-row.user {
+      justify-content: flex-end;
+    }
+
+    .chat-bubble {
+      max-width: 80%;
+      border-radius: 18px;
+      padding: 0.35rem 0.55rem;
+      line-height: 1.35;
+      position: relative;
+    }
+
+    .chat-bubble.user {
+      background: #22c55e;
+      color: #052e16;
+      border-bottom-right-radius: 4px;
+      margin-left: 18%;
+    }
+
+    .chat-bubble.bot {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      border-bottom-left-radius: 4px;
+      margin-right: 8%;
+    }
+
+    .chat-badge-row {
+      display: flex;
+      gap: 0.35rem;
+      margin-bottom: 0.18rem;
+      flex-wrap: wrap;
+    }
+
+    .chat-badge {
+      font-size: 0.6rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.18rem;
+    }
+
+    .chat-badge span:first-child {
+      font-size: 0.8rem;
+      color: #4ade80;
+    }
+
+    .chat-tag {
+      font-size: 0.6rem;
+      margin-top: 0.18rem;
+      color: #9ca3af;
+    }
+
+    .chat-audio {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.22rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      margin-top: 0.15rem;
+    }
+
+    .chat-audio-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #052e16;
+    }
+
+    .chat-audio-line {
+      flex: 1;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #22c55e, rgba(148, 163, 184, 0.6));
+    }
+
+    .chat-audio-time {
+      font-size: 0.6rem;
+      opacity: 0.9;
+    }
+
+    .chat-preview {
+      display: flex;
+      align-items: center;
+      gap: 0.38rem;
+      padding: 0.22rem 0.35rem;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      margin-top: 0.18rem;
+    }
+
+    .chat-preview-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 35% 0, #4ade80 0, #22c55e 40%, #15803d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #052e16;
+    }
+
+    .chat-preview-text {
+      font-size: 0.62rem;
+      color: #e5e7eb;
+    }
+
+    .chat-preview-sub {
+      font-size: 0.6rem;
+      color: #9ca3af;
+      margin-top: 0.05rem;
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 0.12rem;
+      margin-left: 0.05rem;
+    }
+
+    .typing-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: #9ca3af;
+      opacity: 0.6;
+      animation: typingBlink 1.1s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBlink {
+      0%, 60%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+      }
+      30% {
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+    }
+
+    .phone-footer {
+      padding: 0.32rem 0.6rem 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(2, 6, 23, 0.98);
+      border-top: 1px solid rgba(15, 23, 42, 0.95);
+    }
+
+    .phone-input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .phone-input-placeholder {
+      opacity: 0.7;
+    }
+
+    .phone-input-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .phone-send {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.74rem;
+      color: #052e16;
+    }
+
+    /* Generic sections */
+
+    section {
+      padding: 2.8rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 1.45rem;
+      margin: 0;
+      letter-spacing: 0.03em;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 28rem;
+    }
+
+    /* Solução / Serviços */
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.8) 0, #020617 65%, #020314 100%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.1rem 1rem;
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.85);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.16), transparent 55%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-med);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.55rem;
+      font-size: 1rem;
+      color: #4ade80;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .card-text {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin: 0 0 0.6rem;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      font-size: 0.7rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+    }
+
+    .card-tag span:first-child {
+      font-size: 0.8rem;
+      color: #a5b4fc;
+    }
+
+    /* Como funciona / Steps */
+
+    .steps {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .steps-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .steps-highlight {
+      color: #ecfeff;
+      font-weight: 500;
+    }
+
+    .steps-list {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      align-items: flex-start;
+    }
+
+    .step-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+    }
+
+    .step-content-title {
+      font-size: 0.9rem;
+      margin-bottom: 0.12rem;
+    }
+
+    .step-content-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .step-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.35rem;
+    }
+
+    .step-pill {
+      font-size: 0.7rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      color: #9ca3af;
+    }
+
+    .steps-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.18) 0, #020617 50%, #020314 100%);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      box-shadow: var(--shadow-soft);
+      padding: 1.2rem 1.1rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .steps-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .steps-card-title {
+      font-size: 0.94rem;
+      margin: 0;
+    }
+
+    .steps-card-label {
+      font-size: 0.72rem;
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.9);
+      border: 1px solid rgba(16, 185, 129, 0.7);
+      color: #a7f3d0;
+    }
+
+    .steps-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .steps-metric {
+      padding: 0.45rem 0.55rem;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .steps-metric-label {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      margin-bottom: 0.12rem;
+    }
+
+    .steps-metric-value {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #bbf7d0;
+    }
+
+    .steps-metric-tag {
+      font-size: 0.68rem;
+      color: #9ca3af;
+    }
+
+    .steps-footer {
+      font-size: 0.76rem;
+      color: #d1fae5;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .steps-footer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #4ade80;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Benefícios */
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+
+    .benefit-item-title {
+      font-size: 0.92rem;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .benefit-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.55);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: #4ade80;
+    }
+
+    .benefit-item-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .benefits-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.7rem;
+    }
+
+    .benefits-note strong {
+      color: #e5e7eb;
+    }
+
+    .benefits-side {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.22) 0, #020617 50%, #020314 100%);
+      border: 1px solid rgba(37, 99, 235, 0.45);
+      padding: 1.1rem 1.1rem 1.15rem;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 0.7rem;
+      font-size: 0.82rem;
+    }
+
+    .benefits-side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .benefits-side-title {
+      font-size: 0.96rem;
+    }
+
+    .benefits-side-pill {
+      font-size: 0.7rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(59, 130, 246, 0.7);
+      color: #bfdbfe;
+    }
+
+    .benefits-side-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .benefits-side-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .benefits-side-badge {
+      font-size: 0.7rem;
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      color: #e5e7eb;
+    }
+
+    .benefits-side-gain {
+      font-size: 0.74rem;
+      color: #a5b4fc;
+    }
+
+    .benefits-side-gain strong {
+      color: #e0e7ff;
+    }
+
+    .benefits-side-footer {
+      font-size: 0.78rem;
+      color: #cbd5f5;
+    }
+
+    /* Depoimentos */
+
+    .testimonials {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.22) 0, #020617 50%, #020314 100%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1.2rem 1.1rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .testimonials-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .testimonials-title {
+      font-size: 0.96rem;
+      margin: 0;
+    }
+
+    .testimonials-pill {
+      font-size: 0.72rem;
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.85);
+      color: var(--text-muted);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .testimonial-card {
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(30, 41, 59, 0.95);
+      padding: 0.7rem 0.65rem;
+      font-size: 0.8rem;
+      display: grid;
+      gap: 0.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-card::before {
+      content: "Em breve";
+      position: absolute;
+      top: 0.45rem;
+      right: 0.5rem;
+      font-size: 0.6rem;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      color: var(--text-muted);
+    }
+
+    .testimonial-top {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .testimonial-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, #4ade80 0, #22c55e 40%, #0f766e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #022c22;
+    }
+
+    .testimonial-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+    }
+
+    .testimonial-name {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .testimonial-role {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .testimonial-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .testimonial-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      font-size: 0.66rem;
+    }
+
+    .testimonial-tag {
+      padding: 0.14rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+    }
+
+    /* FAQ */
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+
+    .faq-intro {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .faq-intro-list {
+      margin-top: 0.7rem;
+      display: grid;
+      gap: 0.3rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .faq-intro-list span {
+      color: #e5e7eb;
+    }
+
+    .faq-items {
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .faq-item {
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 0.55rem 0.7rem;
+      background: transparent;
+      border: none;
+      color: #e5e7eb;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      cursor: pointer;
+    }
+
+    .faq-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      flex-shrink: 0;
+      transition: transform var(--transition-med), background var(--transition-med), color var(--transition-med);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: rgba(22, 163, 74, 0.12);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.7);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      transition: max-height var(--transition-med), opacity var(--transition-med), padding-bottom var(--transition-med);
+    }
+
+    .faq-item.open .faq-answer {
+      opacity: 1;
+      padding-bottom: 0.65rem;
+    }
+
+    /* Contato */
+
+    .contact {
+      padding: 3rem 0 2.8rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .contact-intro {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .contact-highlight {
+      color: #e5e7eb;
+    }
+
+    .contact-badges {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+    }
+
+    .contact-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      color: #e5e7eb;
+    }
+
+    .contact-note {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .contact-note strong {
+      color: #e5e7eb;
+    }
+
+    .contact-form-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 100% 0, rgba(34, 197, 94, 0.2) 0, #020617 55%, #020314 100%);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      box-shadow: var(--shadow-soft);
+      padding: 1.1rem 1.1rem 1.2rem;
+    }
+
+    .contact-form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-form-title {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .contact-form-pill {
+      font-size: 0.7rem;
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(16, 185, 129, 0.7);
+      color: #a7f3d0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.3rem;
+    }
+
+    .form-label span {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+    }
+
+    .form-label-main {
+      color: #e5e7eb;
+    }
+
+    .input,
+    .textarea,
+    .select {
+      border-radius: 12px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      padding: 0.5rem 0.6rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .input:focus,
+    .textarea:focus,
+    .select:focus {
+      border-color: rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.7), 0 12px 30px rgba(16, 185, 129, 0.45);
+      background: #020617;
+      transform: translateY(-0.5px);
+    }
+
+    .textarea {
+      resize: vertical;
+      min-height: 80px;
+      max-height: 200px;
+    }
+
+    .select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%), linear-gradient(135deg, #6b7280 50%, transparent 50%);
+      background-position: calc(100% - 14px) calc(50% - 3.5px), calc(100% - 10px) calc(50% - 3.5px);
+      background-size: 4px 4px, 4px 4px;
+      background-repeat: no-repeat;
+      padding-right: 1.7rem;
+    }
+
+    .form-footer {
+      margin-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .form-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+    }
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: rgba(15, 23, 42, 0.95);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .checkbox input {
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .checkbox-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: transparent;
+      transition: background var(--transition-fast);
+    }
+
+    .checkbox input:checked + .checkbox-mark {
+      background: #22c55e;
+    }
+
+    .form-hint {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .form-hint a {
+      color: #a7f3d0;
+    }
+
+    .form-actions {
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .form-actions-note {
+      font-size: 0.74rem;
+      color: #bbf7d0;
+    }
+
+    .form-submit {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .form-submit-icon {
+      font-size: 1rem;
+    }
+
+    /* Footer */
+
+    footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.95);
+      padding: 1.2rem 0 1.5rem;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      transition: color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Scroll reveal */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 960px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1.1fr);
+      }
+
+      .hero-phone {
+        order: -1;
+      }
+
+      .phone-frame {
+        max-width: 300px;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps,
+      .benefits-grid,
+      .faq-grid,
+      .contact-grid,
+      .testimonials-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .benefits-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        border-bottom-color: rgba(15, 23, 42, 0.7);
+      }
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .hamburger {
+        display: inline-flex;
+      }
+
+      .hero {
+        padding-top: 2.2rem;
+      }
+
+      .hero-title {
+        font-size: 1.7rem;
+      }
+
+      .hero-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .section-title-row {
+        align-items: flex-start;
+      }
+
+      .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .testimonials-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1.1rem;
+      }
+
+      .phone-frame {
+        max-width: 280px;
+      }
+
+      .hero-cta-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-secondary-cta {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+
+      .form-submit {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .form-submit .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="brand">
+          <div class="brand-logo">
+            <span>🤖</span>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Agente IA WhatsApp Pro</span>
+            <span class="brand-subtitle">Automação humanizada para seu atendimento</span>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#inicio">Início</a>
+          <a href="#solucao">Solução</a>
+          <a href="#beneficios">Benefícios</a>
+          <a href="#depoimentos">Depoimentos</a>
+          <a href="#contato">Contato</a>
+        </div>
+        <div class="nav-cta">
+          <div class="nav-whatsapp-tag">
+            <span>💬</span>
+            <span>Ativo 24/7</span>
+          </div>
+          <a href="#contato" class="btn btn-primary">
+            Falar com especialista
+            <span class="btn-icon">➜</span>
+          </a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+          <div class="hamburger-line"></div>
+        </button>
+      </nav>
+      <div class="mobile-nav" id="mobileNav">
+        <a href="#inicio">Início</a>
+        <a href="#solucao">Solução</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#contato">Contato</a>
+        <a href="#contato" class="btn btn-primary">Quero automatizar meu WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="inicio" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content reveal">
+          <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            <span class="hero-badge-label">IA treinada para o seu negócio</span>
+            <span>Atendimentos em WhatsApp com cara de humano</span>
+          </div>
+          <h1 class="hero-title">
+            Um <span>agente profissional</span> que atende seus clientes sozinho no WhatsApp.
+          </h1>
+          <p class="hero-subtitle">
+            O Agente IA WhatsApp Pro entende áudios, imagens, vídeos e documentos, responde dúvidas,
+            marca consultas, faz triagem e realiza atendimentos completos – como um atendente humano, só que 24/7.
+          </p>
+          <div class="hero-list">
+            <div class="hero-list-item">
+              <div class="hero-list-icon">✓</div>
+              <span>Automação humanizada, treinada com os processos e linguagem da sua empresa.</span>
+            </div>
+            <div class="hero-list-item">
+              <div class="hero-list-icon">🎧</div>
+              <span>Entende áudios e envia respostas claras, sem perda de contexto.</span>
+            </div>
+            <div class="hero-list-item">
+              <div class="hero-list-icon">📅</div>
+              <span>Agenda consultas, reuniões e retornos direto pelo WhatsApp.</span>
+            </div>
+            <div class="hero-list-item">
+              <div class="hero-list-icon">📄</div>
+              <span>Lê documentos, PDFs e imagens para responder com precisão.</span>
+            </div>
+          </div>
+          <div class="hero-cta-row">
+            <a href="#contato" class="btn btn-primary">
+              Quero automatizar meu WhatsApp
+              <span class="btn-icon">💬</span>
+            </a>
+            <button type="button" class="hero-secondary-cta" onclick="document.getElementById('solucao').scrollIntoView({behavior:'smooth'})">
+              <span class="hero-secondary-cta-icon">▶</span>
+              Ver como funciona na prática
+            </button>
+          </div>
+          <div class="hero-meta">
+            <div class="hero-meta-group">
+              <div class="hero-meta-dot"></div>
+              <span>Tempo médio de resposta configurado em segundos.</span>
+            </div>
+            <div class="hero-meta-group">
+              <span class="hero-meta-highlight">Onboarding em poucos dias</span>
+              <span>•</span>
+              <span>Sem precisar trocar de número ou plataforma.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-phone reveal">
+          <div class="hero-glow"></div>
+          <div class="phone-frame">
+            <div class="phone-inner">
+              <div class="phone-notch">
+                <div class="phone-notch-inner"></div>
+              </div>
+              <div class="phone-header">
+                <div class="phone-avatar">AI</div>
+                <div class="phone-header-info">
+                  <div class="phone-header-title">Agente IA · Clínica VivaBem</div>
+                  <div class="phone-header-status">Responde em segundos • Online</div>
+                </div>
+                <div class="phone-header-tag">WhatsApp Pro</div>
+              </div>
+              <div class="phone-body">
+                <div class="phone-chat">
+                  <div class="chat-row user">
+                    <div class="chat-bubble user">
+                      Oi, vocês têm horário pra consulta com cardiologista essa semana?
+                    </div>
+                  </div>
+                  <div class="chat-row">
+                    <div class="chat-bubble bot">
+                      <div class="chat-badge-row">
+                        <div class="chat-badge">
+                          <span>🎧</span>
+                          <span>Áudio de 0:23 interpretado</span>
+                        </div>
+                      </div>
+                      Claro! Vou buscar horários disponíveis para <strong>cardiologia</strong> ainda esta semana.
+                      <div class="chat-tag">Agente IA treinado na agenda da clínica</div>
+                    </div>
+                  </div>
+                  <div class="chat-row">
+                    <div class="chat-bubble bot">
+                      Encontrei estes horários:
+                      <ul style="margin:0.25rem 0 0 0.8rem; padding:0; list-style:disc; font-size:0.7rem;">
+                        <li>Quarta, 15h30</li>
+                        <li>Quinta, 10h00</li>
+                        <li>Sexta, 19h00</li>
+                      </ul>
+                      Qual opção prefere?
+                    </div>
+                  </div>
+                  <div class="chat-row user">
+                    <div class="chat-bubble user">
+                      Pode ser quinta às 10h.
+                    </div>
+                  </div>
+                  <div class="chat-row">
+                    <div class="chat-bubble bot">
+                      Perfeito, sua consulta está <strong>pré-agendada</strong> para quinta às 10h com Dr. João.
+                      <div class="chat-preview">
+                        <div class="chat-preview-thumb">📅</div>
+                        <div>
+                          <div class="chat-preview-text">Confirmação de consulta · Clínica VivaBem</div>
+                          <div class="chat-preview-sub">Dados enviados para o sistema da clínica.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="chat-row">
+                    <div class="chat-bubble bot">
+                      <span>Se quiser, envie foto do seu pedido médico ou exame para eu anexar no seu cadastro.</span>
+                      <div class="chat-tag">Aceita imagens, PDFs e documentos</div>
+                    </div>
+                  </div>
+                  <div class="chat-row user">
+                    <div class="chat-bubble user">
+                      <div class="chat-audio">
+                        <div class="chat-audio-circle">🎤</div>
+                        <div class="chat-audio-line"></div>
+                        <div class="chat-audio-time">0:19</div>
+                      </div>
+                      <div style="margin-top:0.15rem; font-size:0.65rem;">(cliente enviou um áudio)</div>
+                    </div>
+                  </div>
+                  <div class="chat-row">
+                    <div class="chat-bubble bot">
+                      Já ouvi seu áudio e atualizei suas observações. Qualquer dúvida antes da consulta, é só me chamar 🙂
+                      <div class="chat-tag">Atendimento humanizado, 24h por dia</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="phone-footer">
+                <div class="phone-input">
+                  <span class="phone-input-placeholder">Escreva uma mensagem</span>
+                  <div class="phone-input-icons">
+                    <span>📎</span>
+                    <span>🎤</span>
+                  </div>
+                </div>
+                <div class="phone-send">➤</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solução / Serviços -->
+    <section id="solucao">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Solução</span>
+          <div class="section-title-row">
+            <h2 class="section-title">O que o Agente IA WhatsApp Pro faz pela sua empresa</h2>
+            <p class="section-subtitle">
+              Mais do que um bot de respostas prontas, é um agente treinado especificamente com os processos,
+              linguagem e regras do seu negócio.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-3 reveal">
+          <div class="card">
+            <div class="card-icon">🧠</div>
+            <h3 class="card-title">Atendimento inteligente e humanizado</h3>
+            <p class="card-text">
+              O agente entende contexto, histórico e intenção. Conversa como um profissional da sua equipe,
+              com a linguagem e tom de voz que você definir.
+            </p>
+            <div class="card-tag">
+              <span>✨</span>
+              <span>Fluxos sob medida para seu negócio</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🎧</div>
+            <h3 class="card-title">Entende áudios, imagens, vídeos e documentos</h3>
+            <p class="card-text">
+              Seu cliente prefere mandar áudio? Sem problema. O agente transcreve, entende e responde. Também
+              interpreta imagens, PDFs e documentos para resolver demandas completas.
+            </p>
+            <div class="card-tag">
+              <span>📎</span>
+              <span>Análise de arquivos integrada ao atendimento</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <h3 class="card-title">Agenda, confirma e gerencia consultas</h3>
+            <p class="card-text">
+              Do agendamento à confirmação: o agente consulta sua agenda, oferece horários, confirma presença,
+              envia lembretes e atualiza o sistema que você já usa.
+            </p>
+            <div class="card-tag">
+              <span>⚙️</span>
+              <span>Preparado para integrar com sistemas e CRM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section>
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Como funciona</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Implementação rápida, sem complicação técnica</h2>
+            <p class="section-subtitle">
+              Você continua usando o seu número de WhatsApp. Nós conectamos o Agente IA, treinamos com o conteúdo
+              da sua empresa e acompanhamos a performance.
+            </p>
+          </div>
+        </div>
+
+        <div class="steps reveal">
+          <div>
+            <p class="steps-text">
+              Em poucos dias, seu atendimento passa a ser feito por um <span class="steps-highlight">agente treinado exclusivamente
+              para sua marca</span>, que entende perguntas complexas, segue regras de negócio e sabe quando acionar
+              sua equipe humana.
+            </p>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-index">1</div>
+                <div>
+                  <div class="step-content-title">Diagnóstico e desenho do atendimento</div>
+                  <div class="step-content-text">
+                    Entendemos como sua empresa atende hoje: principais dúvidas, etapas de atendimento, regras,
+                    objeções e caminhos de decisão.
+                  </div>
+                  <div class="step-pills">
+                    <span class="step-pill">Mapeamento de jornadas</span>
+                    <span class="step-pill">Tom de voz da marca</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-index">2</div>
+                <div>
+                  <div class="step-content-title">Treinamento do Agente IA</div>
+                  <div class="step-content-text">
+                    Alimentamos o agente com suas informações: site, PDFs, scripts, contratos, tabelas de preço,
+                    políticas internas e exemplos de atendimento.
+                  </div>
+                  <div class="step-pills">
+                    <span class="step-pill">Base de conhecimento personalizada</span>
+                    <span class="step-pill">Cenários reais de clientes</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-index">3</div>
+                <div>
+                  <div class="step-content-title">Conexão ao seu WhatsApp</div>
+                  <div class="step-content-text">
+                    Integramos o agente ao seu número oficial, sem trocar de número. Você continua vendo tudo
+                    e pode assumir conversas quando quiser.
+                  </div>
+                  <div class="step-pills">
+                    <span class="step-pill">Envio e recebimento no mesmo número</span>
+                    <span class="step-pill">Handover para humano</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-index">4</div>
+                <div>
+                  <div class="step-content-title">Monitoramento e melhoria contínua</div>
+                  <div class="step-content-text">
+                    Acompanhamos os atendimentos, ajustamos respostas, incluímos novos cenários e afinamos o
+                    comportamento do agente conforme surgem novas demandas.
+                  </div>
+                  <div class="step-pills">
+                    <span class="step-pill">Relatórios de desempenho</span>
+                    <span class="step-pill">Otimização constante</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="steps-card">
+            <div class="steps-card-header">
+              <h3 class="steps-card-title">Resultados esperados ao automatizar seu WhatsApp</h3>
+              <span class="steps-card-label">Sem robotizar seu atendimento</span>
+            </div>
+            <div class="steps-metrics">
+              <div class="steps-metric">
+                <div class="steps-metric-label">Redução de trabalho manual</div>
+                <div class="steps-metric-value">60%+</div>
+                <div class="steps-metric-tag">das demandas resolvidas sem intervenção humana.</div>
+              </div>
+              <div class="steps-metric">
+                <div class="steps-metric-label">Tempo de resposta</div>
+                <div class="steps-metric-value">&lt; 10s</div>
+                <div class="steps-metric-tag">em qualquer horário, inclusive fins de semana.</div>
+              </div>
+            </div>
+            <div class="steps-footer">
+              <div class="steps-footer-dot"></div>
+              <span>Implementação adaptada ao porte do seu negócio – de pequenos consultórios a operações com alto volume.</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section id="beneficios">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Benefícios</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Por que colocar um Agente IA no seu WhatsApp</h2>
+            <p class="section-subtitle">
+              Ganhe escala sem perder o atendimento próximo que seus clientes esperam – com inteligência real por trás
+              de cada mensagem.
+            </p>
+          </div>
+        </div>
+
+        <div class="benefits-grid reveal">
+          <div>
+            <div class="benefits-list">
+              <div>
+                <div class="benefit-item-title">
+                  <div class="benefit-icon">⚡</div>
+                  Respostas imediatas, 24 horas por dia
+                </div>
+                <p class="benefit-item-text">
+                  O agente atende em segundos, mesmo nos horários em que sua equipe não está disponível. Sem filas,
+                  sem “vou verificar e já retorno”.
+                </p>
+              </div>
+              <div>
+                <div class="benefit-item-title">
+                  <div class="benefit-icon">📈</div>
+                  Mais leads convertidos e menos oportunidades perdidas
+                </div>
+                <p class="benefit-item-text">
+                  Cada contato é uma oportunidade. O Agente IA qualifica, tira dúvidas e leva o cliente até o próximo
+                  passo – seja agendar, comprar ou falar com um vendedor.
+                </p>
+              </div>
+              <div>
+                <div class="benefit-item-title">
+                  <div class="benefit-icon">🤝</div>
+                  Atendimento consistente, independente da equipe
+                </div>
+                <p class="benefit-item-text">
+                  Todas as informações são repassadas da mesma forma, seguindo sua política e discurso comercial, sem
+                  variação de acordo com quem está no plantão.
+                </p>
+              </div>
+              <div>
+                <div class="benefit-item-title">
+                  <div class="benefit-icon">🧩</div>
+                  Integração com seus sistemas e processos
+                </div>
+                <p class="benefit-item-text">
+                  O agente pode registrar dados em planilhas, CRMs, sistemas de agendamento e outros fluxos que você já
+                  utiliza, sem mudar a rotina da sua operação.
+                </p>
+              </div>
+            </div>
+            <p class="benefits-note">
+              <strong>Áreas que mais se beneficiam:</strong> clínicas e consultórios, infoprodutores, escritórios,
+              imobiliárias, prestadores de serviços, times de suporte e vendas que recebem alto volume de mensagens.
+            </p>
+          </div>
+
+          <aside class="benefits-side">
+            <div class="benefits-side-header">
+              <div>
+                <div class="benefits-side-title">Um agente treinado para a realidade da sua empresa</div>
+                <p style="margin:0.18rem 0 0; font-size:0.8rem; color:var(--text-muted);">
+                  Conteúdo, regras e tom de voz construídos em conjunto com você.
+                </p>
+              </div>
+              <span class="benefits-side-pill">Atua como se fosse da sua equipe</span>
+            </div>
+            <div class="benefits-side-row">
+              <div class="benefits-side-badges">
+                <span class="benefits-side-badge">Linguagem alinhada ao seu público</span>
+                <span class="benefits-side-badge">Regras de negócio configuradas</span>
+                <span class="benefits-side-badge">Escalada para humano quando necessário</span>
+              </div>
+            </div>
+            <p class="benefits-side-footer">
+              Você decide o que o agente pode ou não fazer: quais informações pode confirmar, quais decisões pode tomar,
+              quando deve chamar alguém da sua equipe e como registrar cada atendimento.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Depoimentos futuros -->
+    <section id="depoimentos">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Depoimentos</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Cases que o Agente IA WhatsApp Pro vai construir com você</h2>
+            <p class="section-subtitle">
+              A seguir, alguns cenários reais que esta solução foi desenhada para transformar – e que podem se tornar
+              depoimentos da sua empresa em breve.
+            </p>
+          </div>
+        </div>
+
+        <div class="testimonials reveal">
+          <div class="testimonials-header">
+            <h3 class="testimonials-title">Depoimentos em construção</h3>
+            <span class="testimonials-pill">
+              A solução já está pronta, só falta o próximo case: o seu.
+            </span>
+          </div>
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="testimonial-top">
+                <div class="testimonial-avatar">🏥</div>
+                <div class="testimonial-info">
+                  <div class="testimonial-name">Clínica de especialidades</div>
+                  <div class="testimonial-role">Agendamento e confirmação de consultas</div>
+                </div>
+              </div>
+              <p class="testimonial-text">
+                O Agente IA faz a triagem inicial, entende o motivo da consulta, sugere horários disponíveis,
+                confirma presença e envia lembretes – reduzindo faltas e ligações telefônicas.
+              </p>
+              <div class="testimonial-tags">
+                <span class="testimonial-tag">Triagem automática</span>
+                <span class="testimonial-tag">Confirmação de presença</span>
+                <span class="testimonial-tag">Atualização da agenda</span>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="testimonial-top">
+                <div class="testimonial-avatar">🎓</div>
+                <div class="testimonial-info">
+                  <div class="testimonial-name">Escola / curso online</div>
+                  <div class="testimonial-role">Atendimento a leads e alunos</div>
+                </div>
+              </div>
+              <p class="testimonial-text">
+                Responde dúvidas sobre cursos, formas de pagamento, datas e pré-requisitos, além de acompanhar o aluno
+                no pós-matrícula com avisos importantes e suporte de primeira linha.
+              </p>
+              <div class="testimonial-tags">
+                <span class="testimonial-tag">Nutrição de leads</span>
+                <span class="testimonial-tag">Suporte ao aluno</span>
+                <span class="testimonial-tag">Campanhas no WhatsApp</span>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="testimonial-top">
+                <div class="testimonial-avatar">🏢</div>
+                <div class="testimonial-info">
+                  <div class="testimonial-name">Prestador de serviços</div>
+                  <div class="testimonial-role">Orçamentos e qualificação</div>
+                </div>
+              </div>
+              <p class="testimonial-text">
+                Entende o que o cliente precisa, coleta dados, pede fotos ou documentos quando necessário, gera
+                pré-orçamentos e direciona apenas contato qualificado para o time comercial.
+              </p>
+              <div class="testimonial-tags">
+                <span class="testimonial-tag">Pré-atendimento inteligente</span>
+                <span class="testimonial-tag">Envio de documentos</span>
+                <span class="testimonial-tag">Menos perguntas repetidas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Dúvidas frequentes</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Tudo o que você precisa saber antes de começar</h2>
+            <p class="section-subtitle">
+              Se ainda tem dúvidas sobre como funciona a automação de WhatsApp com IA, estas respostas podem ajudar.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-grid reveal">
+          <div class="faq-intro">
+            <p>
+              A ideia não é substituir sua equipe, mas dar a ela um reforço de alto desempenho, capaz de lidar com
+              grande volume de atendimentos repetitivos e complexos com a mesma qualidade sempre.
+            </p>
+            <div class="faq-intro-list">
+              <div><span>•</span> Você mantém o controle sobre o número, o tom de voz e as regras de atendimento.</div>
+              <div><span>•</span> Podemos começar com um piloto e expandir conforme a confiança aumenta.</div>
+              <div><span>•</span> O agente aprende com os atendimentos e fica mais preciso ao longo do tempo.</div>
+            </div>
+          </div>
+
+          <div class="faq-items">
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Vou precisar trocar o número de WhatsApp que uso hoje?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Não. O Agente IA WhatsApp Pro é conectado ao número que você já utiliza na empresa. Seus clientes
+                continuam falando com o mesmo contato, sem perceber mudança de canal – apenas de qualidade e rapidez no atendimento.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>O agente consegue entender áudios, imagens e documentos mesmo?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Sim. O agente recebe os arquivos que o cliente envia (áudios, fotos, vídeos, PDFs e outros documentos),
+                interpreta o conteúdo e responde de forma coerente com o contexto da conversa – sem precisar que alguém
+                da sua equipe pare para ouvir ou ler cada mensagem.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>O que acontece quando o agente não sabe responder algo?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Você decide a estratégia: o agente pode assumir que não sabe e pedir prazo, pode encaminhar para um
+                atendente humano ou registrar a dúvida para que a resposta seja treinada posteriormente. Tudo é
+                configurado de acordo com o nível de autonomia que você deseja.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Quanto tempo leva para colocar o Agente IA em produção?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                Em geral, o processo leva poucos dias: diagnóstico inicial, treinamento com sua base de informações,
+                configurações de regras e testes em ambiente controlado. O cronograma exato depende da complexidade
+                do seu atendimento e integrações necessárias.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>E se eu quiser começar com um projeto pequeno?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                É possível começar só com um fluxo (por exemplo, agendamento, dúvidas frequentes ou suporte de pós-venda)
+                e ir expandindo aos poucos. Assim você valida o retorno na prática e cresce a automação com segurança.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="contact">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Próximo passo</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Vamos desenhar seu Agente IA WhatsApp Pro</h2>
+            <p class="section-subtitle">
+              Envie alguns detalhes sobre seu negócio e o tipo de atendimento que você quer automatizar. Eu retorno com
+              uma proposta clara de implementação.
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-grid reveal">
+          <div>
+            <p class="contact-intro">
+              Cada projeto é construído sob medida, levando em conta o volume de mensagens, complexidade das regras,
+              integrações necessárias e objetivos de negócio. Não é um “bot enlatado”: é um agente feito para a
+              realidade da sua operação.
+            </p>
+            <div class="contact-badges">
+              <span class="contact-badge">Diagnóstico gratuito</span>
+              <span class="contact-badge">Sem obrigação de contratação</span>
+              <span class="contact-badge">Foco em resultado prático</span>
+            </div>
+            <p class="contact-note">
+              <strong>O que você recebe:</strong> uma análise do seu atendimento atual, sugestões de fluxos
+              automatizados, estimativa de ganho de produtividade e um plano de implementação do Agente IA
+              WhatsApp Pro na sua empresa.
+            </p>
+          </div>
+
+          <div class="contact-form-card">
+            <div class="contact-form-header">
+              <h3 class="contact-form-title">Preencha para receber contato</h3>
+              <span class="contact-form-pill">Tempo de resposta médio: alguns minutos em horário comercial</span>
+            </div>
+            <form action="#" method="post" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="form-label-main">Seu nome</span>
+                    <span>Obrigatório</span>
+                  </label>
+                  <input type="text" name="nome" class="input" placeholder="Como prefere ser chamado(a)?" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="form-label-main">Empresa</span>
+                    <span>Opcional</span>
+                  </label>
+                  <input type="text" name="empresa" class="input" placeholder="Nome da empresa ou projeto">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="form-label-main">WhatsApp</span>
+                    <span>Com DDD</span>
+                  </label>
+                  <input type="tel" name="whatsapp" class="input" placeholder="(xx) xxxxx-xxxx" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="form-label-main">E-mail</span>
+                    <span>Para envio de proposta</span>
+                  </label>
+                  <input type="email" name="email" class="input" placeholder="voce@empresa.com" required>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label">
+                    <span class="form-label-main">Segmento da empresa</span>
+                    <span>Ajuda a entender seu cenário</span>
+                  </label>
+                  <select name="segmento" class="select">
+                    <option value="">Selecione uma opção</option>
+                    <option value="clinica">Clínica / consultório</option>
+                    <option value="educacao">Educação / cursos / infoprodutos</option>
+                    <option value="servicos">Prestação de serviços</option>
+                    <option value="imobiliaria">Imobiliária / condomínios</option>
+                    <option value="ecommerce">E-commerce / vendas online</option>
+                    <option value="outros">Outro segmento</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label">
+                    <span class="form-label-main">Como você gostaria de usar o Agente IA?</span>
+                    <span>Conte brevemente o que tem em mente</span>
+                  </label>
+                  <textarea name="mensagem" class="textarea" placeholder="Ex: agendamento de consultas, tirar dúvidas de alunos, suporte pós-venda..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <div class="form-consent">
+                  <label class="checkbox">
+                    <input type="checkbox" name="lgpd" required>
+                    <span class="checkbox-mark"></span>
+                  </label>
+                  <span>
+                    Autorizo o contato para receber informações sobre o Agente IA WhatsApp Pro e entendo que meus dados
+                    serão usados apenas para esse atendimento, conforme LGPD.
+                  </span>
+                </div>
+                <div class="form-hint">
+                  <span>Você pode pedir a exclusão dos seus dados a qualquer momento.</span>
+                  <a href="#contato">Ver política de uso de dados (resumida)</a>
+                </div>
+                <div class="form-actions">
+                  <span class="form-actions-note">
+                    Envie o formulário e, se preferir, compartilho um link direto para teste do agente.
+                  </span>
+                  <div class="form-submit">
+                    <button type="submit" class="btn btn-primary">
+                      Enviar e alinhar um diagnóstico
+                      <span class="form-submit-icon">🚀</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        © <span id="year"></span> Agente IA WhatsApp Pro. Todos os direitos reservados.
+      </div>
+      <div class="footer-links">
+        <span>Baseado em IA de ponta, com configuração sob medida.</span>
+        <a href="#contato">Falar sobre projeto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Atualizar ano no rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Menu mobile
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const btn = item.querySelector('.faq-question');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          const answer = i.querySelector('.faq-answer');
+          if (answer) answer.style.maxHeight = null;
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          const answer = item.querySelector('.faq-answer');
+          if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
