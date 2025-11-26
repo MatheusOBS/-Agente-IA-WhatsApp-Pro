@@ -912,6 +912,123 @@
       color: #a5b4fc;
     }
 
+    /* Pricing / Catálogos */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+
+    .price-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.85) 0, #020617 60%, #020314 100%);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      padding: 1rem;
+      box-shadow: 0 16px 36px rgba(2, 6, 23, 0.6);
+    }
+
+    .price-card .card-title {
+      margin-bottom: 0.6rem;
+      font-size: 1rem;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .price-table th,
+    .price-table td {
+      text-align: left;
+      padding: 0.5rem 0.5rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.7);
+    }
+
+    .price-table th {
+      color: #e5e7eb;
+      font-weight: 600;
+      font-size: 0.86rem;
+      opacity: 0.95;
+    }
+
+    .price-amount {
+      font-weight: 700;
+      color: var(--accent);
+      text-align: right;
+      font-size: 0.96rem;
+    }
+
+    /* Price badges and CTAs */
+    .price-card { position: relative; }
+
+    .price-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.34rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #052e16;
+      background: linear-gradient(90deg, #bbf7d0, #86efac);
+      border: 1px solid rgba(16,185,129,0.85);
+      box-shadow: 0 8px 20px rgba(16,185,129,0.14);
+    }
+
+    .price-card.recommended {
+      border: 1px solid rgba(34,197,94,0.8);
+      box-shadow: 0 22px 48px rgba(34,197,94,0.14);
+      background: linear-gradient(180deg, rgba(4, 30, 17, 0.45), rgba(2,6,23,0.8));
+    }
+
+    .btn-sm {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.82rem;
+      border-radius: 12px;
+    }
+
+    .price-actions {
+      margin-top: 0.6rem;
+      display: flex;
+      gap: 0.55rem;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .price-cta-link { font-size: 0.85rem; color: var(--text-muted); }
+
+    @media (max-width: 960px) {
+      .price-badge { top: 12px; right: 12px; }
+      .price-actions { justify-content: stretch; }
+      .price-actions .btn { flex: 1; }
+    }
+
+    /* Make tables stack nicely on small screens */
+    @media (max-width: 480px) {
+      .price-table thead { display: none; }
+      .price-table tr { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem; padding: 0.35rem 0; }
+      .price-table td { padding: 0.35rem 0; border-bottom: none; font-size: 0.88rem; }
+      .price-table td:first-child { font-weight: 600; color: #e5e7eb; }
+      .price-table td:nth-child(2) { color: var(--text-muted); }
+      .price-amount { justify-self: end; }
+      .price-card { padding: 0.85rem; }
+    }
+
+    .price-card:hover { transform: translateY(-6px); transition: transform 0.22s ease; }
+
+    @media (max-width: 960px) {
+      .pricing-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .price-table th, .price-table td { padding: 0.45rem 0.35rem; font-size: 0.84rem; }
+    }
+
     /* Como funciona / Steps */
 
     .steps {
@@ -1802,6 +1919,7 @@
           <a href="#inicio">Início</a>
           <a href="#solucao">Solução</a>
           <a href="#beneficios">Benefícios</a>
+          <a href="#catalogos">Catálogos</a>
           <a href="#depoimentos">Depoimentos</a>
           <a href="#contato">Contato</a>
         </div>
@@ -1823,6 +1941,7 @@
         <a href="#inicio">Início</a>
         <a href="#solucao">Solução</a>
         <a href="#beneficios">Benefícios</a>
+        <a href="#catalogos">Catálogos</a>
         <a href="#depoimentos">Depoimentos</a>
         <a href="#contato">Contato</a>
         <a href="#contato" class="btn btn-primary">Quero automatizar meu WhatsApp</a>
@@ -2041,6 +2160,125 @@
             <div class="card-tag">
               <span>⚙️</span>
               <span>Preparado para integrar com sistemas e CRM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogos / Preços -->
+    <section id="catalogos">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Catálogos</span>
+          <div class="section-title-row">
+            <h2 class="section-title">Tabela de preços – Agentes WhatsApp</h2>
+            <p class="section-subtitle">Escolha o catálogo que melhor se adapta ao seu fluxo de atendimento. Tarifas mensais por tipo de agente e versão.</p>
+          </div>
+        </div>
+
+        <div class="pricing-grid reveal">
+          <div class="price-card">
+            <span class="price-badge">Média</span>
+            <h3 class="card-title">Atendimento Automático (Suporte / SAC)</h3>
+            <table class="price-table">
+              <tr>
+                <th>Versão</th>
+                <th>O que inclui</th>
+                <th>Preço</th>
+              </tr>
+              <tr>
+                <td><strong>Média</strong></td>
+                <td>Respostas automáticas, fluxo básico, captura de dados.</td>
+                <td class="price-amount">R$ 49,90</td>
+              </tr>
+              <tr>
+                <td><strong>Avançada</strong></td>
+                <td>IA humanizada, entendimento de áudio/imagem, agendamento.</td>
+                <td class="price-amount">R$ 99,90</td>
+              </tr>
+            </table>
+            <div class="price-actions">
+              <a href="#contato" class="btn btn-primary btn-sm">Contratar · R$ 49,90</a>
+              <a href="#contato" class="btn btn-ghost btn-sm price-cta-link">Mais informações</a>
+            </div>
+          </div>
+
+          <div class="price-card">
+            <span class="price-badge">Vendas</span>
+            <h3 class="card-title">Agente de Vendas</h3>
+            <table class="price-table">
+              <tr>
+                <th>Versão</th>
+                <th>O que inclui</th>
+                <th>Preço</th>
+              </tr>
+              <tr>
+                <td><strong>Média</strong></td>
+                <td>Qualificação simples, envio de catálogo, respostas rápidas.</td>
+                <td class="price-amount">R$ 69,90</td>
+              </tr>
+              <tr>
+                <td><strong>Avançada</strong></td>
+                <td>IA persuasiva, funil automatizado, follow-up e segmentação.</td>
+                <td class="price-amount">R$ 149,90</td>
+              </tr>
+            </table>
+            <div class="price-actions">
+              <a href="#contato" class="btn btn-primary btn-sm">Contratar · R$ 69,90</a>
+              <a href="#contato" class="btn btn-ghost btn-sm price-cta-link">Mais informações</a>
+            </div>
+          </div>
+
+          <div class="price-card">
+            <span class="price-badge">Agendamento</span>
+            <h3 class="card-title">Agente de Agendamentos</h3>
+            <table class="price-table">
+              <tr>
+                <th>Versão</th>
+                <th>O que inclui</th>
+                <th>Preço</th>
+              </tr>
+              <tr>
+                <td><strong>Média</strong></td>
+                <td>Geração de links de agenda e coleta de dados.</td>
+                <td class="price-amount">R$ 59,90</td>
+              </tr>
+              <tr>
+                <td><strong>Avançada</strong></td>
+                <td>Integração completa com calendários, lembretes automáticos.</td>
+                <td class="price-amount">R$ 129,90</td>
+              </tr>
+            </table>
+            <div class="price-actions">
+              <a href="#contato" class="btn btn-primary btn-sm">Contratar · R$ 59,90</a>
+              <a href="#contato" class="btn btn-ghost btn-sm price-cta-link">Mais informações</a>
+            </div>
+          </div>
+
+          <div class="price-card recommended">
+            <span class="price-badge">Recomendado</span>
+            <h3 class="card-title">Agente Multiatendimento (Seu “Agente Premium”)</h3>
+            <table class="price-table">
+              <tr>
+                <th>Versão</th>
+                <th>O que inclui</th>
+                <th>Preço</th>
+              </tr>
+              <tr>
+                <td><strong>Média</strong></td>
+                <td>Atendimento + vendas básicos.</td>
+                <td class="price-amount">R$ 89,90</td>
+              </tr>
+              <tr>
+                <td><strong>Avançada (Premium)</strong></td>
+                <td>IA humanizada, vendas, suporte, agenda, análise de mídias.</td>
+                <td class="price-amount">R$ 199,90</td>
+              </tr>
+            </table>
+            <div class="price-actions">
+              <a href="#contato" class="btn btn-primary btn-sm">Contratar</a>
+              <a href="#contato" class="btn btn-ghost btn-sm price-cta-link">Mais informações</a>
             </div>
           </div>
         </div>
