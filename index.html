@@ -2695,7 +2695,7 @@
               <h3 class="contact-form-title">Preencha para receber contato</h3>
               <span class="contact-form-pill">Tempo de resposta médio: alguns minutos em horário comercial</span>
             </div>
-            <form action="#" method="post" novalidate>
+            <form id="contactForm" action="#" method="post" novalidate>
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">
@@ -2768,12 +2768,12 @@
                   <span class="form-actions-note">
                     Envie o formulário e, se preferir, compartilho um link direto para teste do agente.
                   </span>
-                  <div class="form-submit">
-                    <button type="submit" class="btn btn-primary">
-                      Enviar e alinhar um diagnóstico
-                      <span class="form-submit-icon">🚀</span>
-                    </button>
-                  </div>
+                    <div class="form-submit">
+                      <button type="submit" class="btn btn-primary">
+                        Enviar e alinhar um diagnóstico
+                        <span class="form-submit-icon">🚀</span>
+                      </button>
+                    </div>
                 </div>
               </div>
             </form>
@@ -2845,6 +2845,34 @@
     }, { threshold: 0.14 });
 
     revealEls.forEach(el => observer.observe(el));
+    
+    // Quick test: intercept contact form submit and open mail client (mailto) with form data
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        // Collect values
+        const nome = (this.querySelector('input[name=nome]') || {}).value || '';
+        const empresa = (this.querySelector('input[name=empresa]') || {}).value || '';
+        const whatsapp = (this.querySelector('input[name=whatsapp]') || {}).value || '';
+        const email = (this.querySelector('input[name=email]') || {}).value || '';
+        const segmento = (this.querySelector('select[name=segmento]') || {}).value || '';
+        const mensagem = (this.querySelector('textarea[name=mensagem]') || {}).value || '';
+        // Build mailto
+        const to = 'matheusoliveiradevcontato@gmail.com';
+        const subject = encodeURIComponent('Contato via site — Agente IA WhatsApp Pro');
+        let body = '';
+        body += 'Nome: ' + nome + '\n';
+        body += 'Empresa: ' + empresa + '\n';
+        body += 'WhatsApp: ' + whatsapp + '\n';
+        body += 'E-mail: ' + email + '\n';
+        body += 'Segmento: ' + segmento + '\n\n';
+        body += 'Mensagem:\n' + mensagem + '\n';
+        const mailto = `mailto:${to}?subject=${subject}&body=${encodeURIComponent(body)}`;
+        // Open mail client
+        window.location.href = mailto;
+      });
+    }
   </script>
 </body>
 </html>
