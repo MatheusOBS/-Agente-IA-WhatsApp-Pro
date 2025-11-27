@@ -2846,11 +2846,16 @@
 
     revealEls.forEach(el => observer.observe(el));
     
-    // Quick test: intercept contact form submit and open mail client (mailto) with form data
+    // Form submission handler
+    // If you want to use Formspree: sign in to https://formspree.io, create a form and replace FORMPSREE_ENDPOINT below
+    // Example: const FORMPSREE_ENDPOINT = 'https://formspree.io/f/mypersonalformid';
+    const FORMPSREE_ENDPOINT = 'https://formspree.io/f/<YOUR_FORM_ID>'; // <-- replace with your Formspree endpoint
+
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-      contactForm.addEventListener('submit', function (ev) {
+      contactForm.addEventListener('submit', async function (ev) {
         ev.preventDefault();
+
         // Collect values
         const nome = (this.querySelector('input[name=nome]') || {}).value || '';
         const empresa = (this.querySelector('input[name=empresa]') || {}).value || '';
@@ -2858,20 +2863,52 @@
         const email = (this.querySelector('input[name=email]') || {}).value || '';
         const segmento = (this.querySelector('select[name=segmento]') || {}).value || '';
         const mensagem = (this.querySelector('textarea[name=mensagem]') || {}).value || '';
-        // Build mailto
-        const to = 'matheusoliveiradevcontato@gmail.com';
-        const subject = encodeURIComponent('Contato via site — Agente IA WhatsApp Pro');
-        let body = '';
-        body += 'Nome: ' + nome + '\n';
-        body += 'Empresa: ' + empresa + '\n';
-        body += 'WhatsApp: ' + whatsapp + '\n';
-        body += 'E-mail: ' + email + '\n';
-        body += 'Segmento: ' + segmento + '\n\n';
-        body += 'Mensagem:\n' + mensagem + '\n';
-        const mailto = `mailto:${to}?subject=${subject}&body=${encodeURIComponent(body)}`;
-        // Open mail client
-        window.location.href = mailto;
+
+        // If Formspree endpoint is configured (not the placeholder), send via fetch
+        if (FORMPSREE_ENDPOINT && !FORMPSREE_ENDPOINT.includes('<YOUR_FORM_ID>')) {
+          try {
+            const payload = {
+              nome, empresa, whatsapp, email, segmento, mensagem
+            };
+            const resp = await fetch(FORMPSREE_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (resp.ok) {
+              alert('Mensagem enviada com sucesso — vou responder em breve no seu e-mail.');
+              contactForm.reset();
+            } else {
+              const data = await resp.json().catch(() => ({}));
+              console.warn('Formspree response not ok', resp.status, data);
+              alert('Ocorreu um erro ao enviar. Tentando abrir seu cliente de e-mail...');
+              // fallback to mailto
+              sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
+            }
+          } catch (err) {
+            console.error('Erro no envio Formspree', err);
+            alert('Falha ao enviar automaticamente. Abrindo cliente de e-mail...');
+            sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
+          }
+        } else {
+          // Fallback: open mail client (mailto) to the configured email
+          sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
+        }
       });
+    }
+
+    function sendMailto(nome, empresa, whatsapp, email, segmento, mensagem) {
+      const to = 'matheusoliveiradevcontato@gmail.com';
+      const subject = encodeURIComponent('Contato via site — Agente IA WhatsApp Pro');
+      let body = '';
+      body += 'Nome: ' + nome + '\n';
+      body += 'Empresa: ' + empresa + '\n';
+      body += 'WhatsApp: ' + whatsapp + '\n';
+      body += 'E-mail: ' + email + '\n';
+      body += 'Segmento: ' + segmento + '\n\n';
+      body += 'Mensagem:\n' + mensagem + '\n';
+      const mailto = `mailto:${to}?subject=${subject}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
     }
   </script>
 </body>
