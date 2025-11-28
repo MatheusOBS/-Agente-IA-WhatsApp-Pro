@@ -2695,7 +2695,11 @@
               <h3 class="contact-form-title">Preencha para receber contato</h3>
               <span class="contact-form-pill">Tempo de resposta médio: alguns minutos em horário comercial</span>
             </div>
-            <form id="contactForm" action="#" method="post" novalidate>
+            <form id="contactForm" action="https://formsubmit.co/matheusoliveiradevcontato@gmail.com" method="POST" novalidate>
+              <!-- Using Formsubmit.co: visiting your email will require verification on first submit -->
+              <input type="hidden" name="_subject" value="Novo contato via site — Agente IA WhatsApp Pro">
+              <input type="hidden" name="_next" value="https://matheusobs.github.io/-Agente-IA-WhatsApp-Pro/?form=success">
+              <input type="hidden" name="_captcha" value="false">
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">
@@ -2856,7 +2860,13 @@
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
       contactForm.addEventListener('submit', async function (ev) {
-        ev.preventDefault();
+        // If the form is using FormSubmit (action contains formsubmit.co) let it submit normally
+        const action = (this.getAttribute('action') || '').toLowerCase();
+        const usingFormSubmit = action.includes('formsubmit.co') && !action.includes('<your');
+        if (usingFormSubmit) {
+          // allow default HTML form submission to FormSubmit service
+          return;
+        }
 
         // Collect values
         const nome = (this.querySelector('input[name=nome]') || {}).value || '';
