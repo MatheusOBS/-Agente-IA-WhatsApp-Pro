@@ -18,3 +18,10 @@ const FORMPSREE_ENDPOINT = 'https://formspree.io/f/abcde123';
 5. Salve e redeploy seu site. O formulário agora enviará automaticamente (via Formspree). Se ocorrer algum erro, o formulário fará fallback para `mailto:` e abrirá o cliente de e‑mail do usuário.
 
 Observação: esta solução é simples para sites estáticos e evita criar um backend. Se você preferir suporte por SMTP ou serverless, me diga que eu oriento a configurar.
+
+## Política de Privacidade
+
+As políticas de privacidade do site foram incorporadas ao repositório como arquivos estáticos em `politica-privacidade/index.html`.
+Você pode visualizar a página localmente pelo caminho `/politica-privacidade/index.html` ou no GitHub em: https://github.com/MatheusOBS/politica-privacidade
+
+Observação: anteriormente este conteúdo estava vinculado como um submódulo Git; ele foi substituído por arquivos estáticos para simplificar o deploy e garantir disponibilidade sem dependências de submódulos.
