@@ -2695,11 +2695,7 @@
               <h3 class="contact-form-title">Preencha para receber contato</h3>
               <span class="contact-form-pill">Tempo de resposta médio: alguns minutos em horário comercial</span>
             </div>
-            <form id="contactForm" action="https://formsubmit.co/matheusoliveiradevcontato@gmail.com" method="POST" novalidate>
-              <!-- Using Formsubmit.co: visiting your email will require verification on first submit -->
-              <input type="hidden" name="_subject" value="Novo contato via site — Agente IA WhatsApp Pro">
-              <input type="hidden" name="_next" value="https://matheusobs.github.io/-Agente-IA-WhatsApp-Pro/?form=success">
-              <input type="hidden" name="_captcha" value="false">
+            <form id="contactForm" method="POST" novalidate>
               <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label">
@@ -2853,21 +2849,10 @@
     revealEls.forEach(el => observer.observe(el));
     
     // Form submission handler
-    // If you want to use Formspree: sign in to https://formspree.io, create a form and replace FORMPSREE_ENDPOINT below
-    // Example: const FORMPSREE_ENDPOINT = 'https://formspree.io/f/mypersonalformid';
-    const FORMPSREE_ENDPOINT = 'https://formspree.io/f/<YOUR_FORM_ID>'; // <-- replace with your Formspree endpoint
-
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-      contactForm.addEventListener('submit', async function (ev) {
-        // If the form is using FormSubmit (action contains formsubmit.co) let it submit normally
-        const action = (this.getAttribute('action') || '').toLowerCase();
-        const usingFormSubmit = action.includes('formsubmit.co') && !action.includes('<your');
-        if (usingFormSubmit) {
-          // allow default HTML form submission to FormSubmit service
-          return;
-        }
-
+      contactForm.addEventListener('submit', function (ev) {
+        ev.preventDefault();
         // Collect values
         const nome = (this.querySelector('input[name=nome]') || {}).value || '';
         const empresa = (this.querySelector('input[name=empresa]') || {}).value || '';
@@ -2876,36 +2861,7 @@
         const segmento = (this.querySelector('select[name=segmento]') || {}).value || '';
         const mensagem = (this.querySelector('textarea[name=mensagem]') || {}).value || '';
 
-        // If Formspree endpoint is configured (not the placeholder), send via fetch
-        if (FORMPSREE_ENDPOINT && !FORMPSREE_ENDPOINT.includes('<YOUR_FORM_ID>')) {
-          try {
-            const payload = {
-              nome, empresa, whatsapp, email, segmento, mensagem
-            };
-            const resp = await fetch(FORMPSREE_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if (resp.ok) {
-              alert('Mensagem enviada com sucesso — vou responder em breve no seu e-mail.');
-              contactForm.reset();
-            } else {
-              const data = await resp.json().catch(() => ({}));
-              console.warn('Formspree response not ok', resp.status, data);
-              alert('Ocorreu um erro ao enviar. Tentando abrir seu cliente de e-mail...');
-              // fallback to mailto
-              sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
-            }
-          } catch (err) {
-            console.error('Erro no envio Formspree', err);
-            alert('Falha ao enviar automaticamente. Abrindo cliente de e-mail...');
-            sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
-          }
-        } else {
-          // Fallback: open mail client (mailto) to the configured email
-          sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
-        }
+        sendMailto(nome, empresa, whatsapp, email, segmento, mensagem);
       });
     }
 
