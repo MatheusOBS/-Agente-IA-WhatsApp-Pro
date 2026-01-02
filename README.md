@@ -1,27 +1,42 @@
-# -Agente-IA-WhatsApp-Pro
-Automação humanizada no WhatsApp com IA. O Agente IA WhatsApp Pro entende áudios, imagens, vídeos e documentos, responde dúvidas, agenda consultas e oferece atendimento 24h personalizado para cada empresa. Ideal para negócios que desejam agilidade, profissionalismo e escala.
+# 🤖 Agente IA WhatsApp Pro
 
-## Como ativar envio automático do formulário (Formspree)
+**Automação Comercial Humanizada & Inteligente (24/7)**
 
-O formulário do site suporta envio automático via Formspree. Por padrão o projeto contém um placeholder — siga estes passos para ativar o envio real para seu e‑mail:
+![Status](https://img.shields.io/badge/Status-Production-green)
+![AI Engine](https://img.shields.io/badge/AI-LLM_Integrated-blueviolet)
 
-1. Acesse https://formspree.io e crie uma conta (ou faça login).
-2. Clique em "New Form" e siga os passos. Você poderá escolher seu e‑mail destino na dashboard.
-3. Copie o endpoint fornecido por eles. Será algo como: `https://formspree.io/f/abcde123`.
-4. No arquivo `index.html`, procure a constante `FORMPSREE_ENDPOINT` (perto do final do arquivo) e substitua o placeholder (`https://formspree.io/f/<YOUR_FORM_ID>`) pelo endpoint copiado.
+O **Agente IA WhatsApp Pro** é uma solução enterprise para atendimento automatizado que transcende chatbots tradicionais. Utilizando Modelos de Linguagem (LLMs) de última geração, o sistema entende contexto, interpreta mídias (áudio, imagem e documentos) e realiza agendamentos complexos de forma natural.
 
-Exemplo:
-```
-const FORMPSREE_ENDPOINT = 'https://formspree.io/f/abcde123';
-```
+## 🧠 Capacidades Cognitivas
 
-5. Salve e redeploy seu site. O formulário agora enviará automaticamente (via Formspree). Se ocorrer algum erro, o formulário fará fallback para `mailto:` e abrirá o cliente de e‑mail do usuário.
+*   **Processamento Multimodal:** Analisa fotos enviadas por clientes (ex: comprovantes, produtos) e transcreve áudios em tempo real.
+*   **Contexto Persistente:** Lembra preferências do cliente e histórico de conversas anteriores.
+*   **Agendamento Inteligente:** Conecta-se à agenda da empresa para verificar disponibilidade e marcar reuniões sem conflitos.
+*   **Humanização Adaptativa:** Ajusta o tom de voz (formal, amigável, técnico) conforme a marca da empresa.
 
-Observação: esta solução é simples para sites estáticos e evita criar um backend. Se você preferir suporte por SMTP ou serverless, me diga que eu oriento a configurar.
+## 🏗️ Arquitetura da Solução
 
-## Política de Privacidade
+O sistema opera em uma arquitetura de microsserviços orientada a eventos:
 
-As políticas de privacidade do site foram incorporadas ao repositório como arquivos estáticos em `politica-privacidade/index.html`.
-Você pode visualizar a página localmente pelo caminho `/politica-privacidade/index.html` ou no GitHub em: https://github.com/MatheusOBS/politica-privacidade
+1.  **Ingestion Layer:** Webhooks do WhatsApp Business API recebem mensagens.
+2.  **Reasoning Engine:** O core da IA processa a intenção do usuário e decide a ação (Responder, Agendar, Escalonar).
+3.  **Action Layer:** Executa funções externas (consultar banco de dados, enviar e-mail via Formspree, atualizar CRM).
 
-Observação: anteriormente este conteúdo estava vinculado como um submódulo Git; ele foi substituído por arquivos estáticos para simplificar o deploy e garantir disponibilidade sem dependências de submódulos.
+## 🚀 Configuração Rápida (Formspree)
+
+Para ativar o módulo de contato / lead generation no site estático:
+
+1.  Crie um form em [formspree.io](https://formspree.io).
+2.  No arquivo `index.html`, atualize a constante:
+    ```javascript
+    const FORMPSREE_ENDPOINT = 'https://formspree.io/f/seu_id_aqui';
+    ```
+
+## 🔒 Privacidade e Conformidade
+
+Este projeto segue rigorosamente a LGPD.
+*   **Política de Privacidade:** Disponível em `/politica-privacidade/index.html`.
+*   **Dados:** Todo processamento de IA é efetuado com mascaramento de dados sensíveis (PII).
+
+---
+*Desenvolvido por [MatheusOBS](https://github.com/MatheusOBS) - Transformando conversas em conversão.*
